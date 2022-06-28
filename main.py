@@ -158,12 +158,15 @@ async def read_contact_types():
     query = contact_types.select()
     return await database.fetch_all(query)
 
-
 @app.get("/comments/", response_model=List[Comment])
 async def read_comments(contact_id: int):
     query = comments.select().where(comments.c.id_contact == contact_id)
     return await database.fetch_all(query)
 
+@app.get("/comment/", response_model=Comment)
+async def read_comment(id_comment: int):
+    query = comments.select().where(comments.c.id == id_comment)
+    return await database.fetch_one(query)
 
 @app.post("/comments/", response_model=Comment)
 async def create_comment(commentIn: CommentIn):
@@ -174,6 +177,19 @@ async def create_comment(commentIn: CommentIn):
     last_record_id = await database.execute(query)
     return {**commentIn.dict(), 'id': last_record_id}
 
+@app.put("/comments/", response_model=Comment)
+async def edit_comment(commentIn: Comment):
+    query = comments.update().values(
+        comment=commentIn.comment
+    ).where(comments.c.id == commentIn.id)
+    last_record_id = await database.execute(query)
+    return {**commentIn.dict(), 'id': last_record_id}
+
+@app.delete("/comments/{id_comment}")
+async def delete_contact(id_comment):
+    query = comments.delete().where(comments.c.id == id_comment)
+    await database.execute(query)
+    return {'message': 'Comment deleted'}
 
 @app.get("/gender/", response_model=Gender)
 async def read_gender_by_id(id: int):
@@ -214,14 +230,19 @@ async def read_tasks(id_contact: int):
                    tasks.c.created_at).where(tasks.c.id_contact == id_contact, users.c.id == tasks.c.id_user)
     return await database.fetch_all(query)
 
+@app.get("/task/")
+async def read_task(id_task: int):
+    query = select(tasks.c.id, tasks.c.title, users.c.id, users.c.firstname, users.c.lastname, tasks.c.date_end,
+                   tasks.c.created_at).where(tasks.c.id == id_task)
+    return await database.fetch_one(query)
 
 @app.put("/tasks/", response_model=Tasks)
 async def update_task(task: Tasks):
     query = tasks.update().values(
-        title=tasks.title,
-        id_user=tasks.id_user,
-        date_end=tasks.date_end,
-    ).where(tasks.c.id == tasks.id)
+        title=task.title,
+        id_user=task.id_user,
+        date_end=task.date_end,
+    ).where(tasks.c.id == task.id)
     last_record_id = await database.execute(query)
     return {**task.dict(), 'id': last_record_id}
 
