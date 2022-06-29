@@ -1,7 +1,12 @@
-uvicorn==0.12.3
-aiofiles==0.6.0
-python-multipart==0.0.5
-jinja2==2.11.2
 aiosqlite==0.17.0
+anyio==3.6.1
 databases==0.6.0
-sqlalchemy==1.4.32
+fastapi==0.78.0
+greenlet==1.1.2
+gunicorn==20.1.0
+idna==3.3
+pydantic==1.9.1
+sniffio==1.2.0
+SQLAlchemy==1.4.39
+starlette==0.19.1
+typing_extensions==4.2.0
