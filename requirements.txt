@@ -4,3 +4,4 @@ python-multipart==0.0.5
 jinja2==2.11.2
 aiosqlite==0.17.0
 databases==0.6.0
+sqlalchemy==1.4.32
