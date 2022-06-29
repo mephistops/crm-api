@@ -2,16 +2,15 @@ from typing import List
 import databases
 from sqlalchemy import select, MetaData, create_engine, Table, Column, Integer, String, DateTime
 
-from config import URIBD
 from tables.models import ContactIn, GenderIn, User, Contact, Tasks, TasksIn, Comment, CommentIn, ContactType, Gender, Origin, Status
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-database = databases.Database(URIBD)
+database = databases.Database("sqlite:///./crm.db")
 metadata = MetaData()
 
-engine = create_engine(URIBD)
+engine = create_engine("sqlite:///./crm.db", connect_args={"check_same_thread": False})
 
 metadata.create_all(engine)
 
@@ -74,14 +73,10 @@ status = Table('status', metadata,
 
 app = FastAPI()
 
-origins = [
-    "http://localhost",
-    "http://localhost:3000"
-]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -4,5 +4,5 @@ DBPASSWORD = ''
 DBNAME = 'crm'
 DBPORT = 3306
 
-URIBD = 'mysql+pymysql://{}:{}@{}/{}'.format(
-    DBUSERNAME, DBPASSWORD, DBHOST, DBNAME)
+""" URIBD = 'mysql+pymysql://{}:{}@{}/{}'.format(
+    DBUSERNAME, DBPASSWORD, DBHOST, DBNAME) """
